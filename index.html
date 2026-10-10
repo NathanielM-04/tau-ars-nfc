@@ -276,6 +276,33 @@
       font-size: 12px;
     }
 
+    .logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin: 0 auto 22px;
+}
+
+.office-logo {
+  width: 88px;
+  height: 88px;
+  object-fit: contain;
+  padding: 7px;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+@media (max-width: 420px) {
+  .office-logo {
+    width: 72px;
+    height: 72px;
+  }
+
+  .logo-container {
+    gap: 14px;
+  }
+}
     footer strong { color: var(--green); }
 
     @media (max-width: 420px) {
@@ -289,9 +316,19 @@
 <body>
   <header class="hero">
     <div class="hero-inner">
-      <div class="seal" aria-label="TAU ARS text emblem">
-        TAU<br>ARS
-      </div>
+      <div class="logo-container">
+  <img
+    src="./images/tau-logo.png"
+    alt="Tarlac Agricultural University logo"
+    class="office-logo"
+  >
+
+  <img
+    src="./images/ars-logo.png"
+    alt="Admission and Registration Services logo"
+    class="office-logo"
+  >
+</div>
       <p class="eyebrow">Tarlac Agricultural University</p>
       <h1>Admission and Registration Services</h1>
       <p>Your digital contact card for office information, services, and contact details.</p>
@@ -428,7 +465,7 @@
       organization: "Tarlac Agricultural University",
       department: "Admission and Registration Services",
       email: "ars@tau.edu.ph",
-      phone: "",
+      phone: "0961-556-1463 / 0916-744-2456",
       address: "Camiling, Tarlac, Philippines 2306",
       website: "https://www.tau.edu.ph",
       services: [
