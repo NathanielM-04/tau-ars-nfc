@@ -1,0 +1,643 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#075b3b">
+  <meta name="description" content="Official digital contact card for Tarlac Agricultural University Admission and Registration Services.">
+  <title>TAU ARS Office | Digital NFC Card</title>
+  <link rel="manifest" href="./manifest.json">
+
+  <style>
+    :root {
+      --green: #075b3b;
+      --dark-green: #03452d;
+      --gold: #f3c94f;
+      --light: #f5f8f5;
+      --text: #1d2c25;
+      --muted: #66746b;
+      --white: #ffffff;
+      --border: #e0e9e2;
+      --radius: 20px;
+      --shadow: 0 12px 35px rgba(3, 69, 45, .10);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background: var(--light);
+      line-height: 1.6;
+    }
+
+    a { color: var(--green); }
+
+    button, a { -webkit-tap-highlight-color: transparent; }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .hero {
+      color: var(--white);
+      background: linear-gradient(145deg, var(--dark-green), var(--green));
+      padding: 38px 20px 70px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero::before {
+      width: 260px;
+      height: 260px;
+      top: -130px;
+      right: -60px;
+    }
+
+    .hero::after {
+      width: 200px;
+      height: 200px;
+      bottom: -120px;
+      left: -65px;
+    }
+
+    .hero-inner {
+      max-width: 720px;
+      margin: auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .seal {
+      width: 96px;
+      height: 96px;
+      margin: 0 auto 18px;
+      display: grid;
+      place-items: center;
+      border: 2px solid var(--gold);
+      border-radius: 50%;
+      color: var(--gold);
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      line-height: 1.25;
+      padding: 12px;
+      background: rgba(255,255,255,.06);
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(26px, 5vw, 38px);
+      line-height: 1.2;
+    }
+
+    .hero p {
+      margin: 14px auto 0;
+      max-width: 560px;
+      color: rgba(255,255,255,.85);
+      font-size: 15px;
+    }
+
+    .container {
+      width: min(100% - 30px, 760px);
+      margin: -38px auto 40px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 23px;
+      margin-bottom: 17px;
+      box-shadow: var(--shadow);
+    }
+
+    .section-title {
+      margin: 0 0 7px;
+      color: var(--dark-green);
+      font-size: 19px;
+    }
+
+    .section-intro {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .office-name {
+      font-size: 17px;
+      font-weight: 700;
+      margin: 0 0 5px;
+    }
+
+    .info-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .info-list li {
+      display: flex;
+      gap: 12px;
+      padding: 13px 0;
+      border-bottom: 1px solid #edf1ed;
+      overflow-wrap: anywhere;
+    }
+
+    .info-list li:last-child { border-bottom: 0; }
+
+    .info-icon {
+      flex: 0 0 36px;
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      background: #eaf4ed;
+      font-size: 17px;
+    }
+
+    .info-label {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 2px;
+    }
+
+    .info-value {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .button-list {
+      display: grid;
+      gap: 11px;
+    }
+
+    .action-button {
+      width: 100%;
+      min-height: 49px;
+      border: 1px solid var(--green);
+      border-radius: 12px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      font-weight: 700;
+      text-decoration: none;
+      text-align: center;
+      transition: transform .15s, background .15s;
+    }
+
+    .action-button:active { transform: scale(.99); }
+
+    .primary {
+      color: var(--white);
+      background: var(--green);
+    }
+
+    .primary:hover { background: var(--dark-green); }
+
+    .secondary {
+      color: var(--green);
+      background: var(--white);
+    }
+
+    .secondary:hover { background: #eff7f1; }
+
+    .service-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .service-list li {
+      padding: 12px;
+      border-radius: 12px;
+      background: #f2f7f3;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .service-list li::before {
+      content: "✓";
+      color: var(--green);
+      font-weight: 800;
+      margin-right: 7px;
+    }
+
+    .notice {
+      color: var(--muted);
+      font-size: 12px;
+      margin: 13px 0 0;
+    }
+
+    .status {
+      min-height: 20px;
+      margin: 12px 0 0;
+      text-align: center;
+      color: var(--green);
+      font-size: 13px;
+      overflow-wrap: anywhere;
+    }
+
+    footer {
+      padding: 4px 20px 30px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    footer strong { color: var(--green); }
+
+    @media (max-width: 420px) {
+      .hero { padding-top: 30px; }
+      .card { padding: 19px; }
+      .service-list { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="seal" aria-label="TAU ARS text emblem">
+        TAU<br>ARS
+      </div>
+      <p class="eyebrow">Tarlac Agricultural University</p>
+      <h1>Admission and Registration Services</h1>
+      <p>Your digital contact card for office information, services, and contact details.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2 class="section-title">About the Office</h2>
+      <p>
+        The Admission and Registration Services (ARS) Office supports students
+        and applicants with admission and registration-related inquiries and
+        other services handled by the office.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="section-title">Office Contact Information</h2>
+      <p class="section-intro">Official office details in one convenient place.</p>
+
+      <ul class="info-list">
+        <li>
+          <span class="info-icon" aria-hidden="true">🏢</span>
+          <div>
+            <span class="info-label">Office</span>
+            <div class="info-value">Admission and Registration Services (ARS)</div>
+          </div>
+        </li>
+        <li>
+          <span class="info-icon" aria-hidden="true">🎓</span>
+          <div>
+            <span class="info-label">University</span>
+            <div class="info-value">Tarlac Agricultural University</div>
+          </div>
+        </li>
+        <li>
+          <span class="info-icon" aria-hidden="true">📍</span>
+          <div>
+            <span class="info-label">Address</span>
+            <div class="info-value" id="officeAddress"></div>
+          </div>
+        </li>
+        <li id="emailRow">
+          <span class="info-icon" aria-hidden="true">✉️</span>
+          <div>
+            <span class="info-label">Email</span>
+            <div class="info-value"><a id="officeEmailLink" href="#"></a></div>
+          </div>
+        </li>
+        <li id="phoneRow" hidden>
+          <span class="info-icon" aria-hidden="true">☎️</span>
+          <div>
+            <span class="info-label">Telephone</span>
+            <div class="info-value" id="officePhone"></div>
+          </div>
+        </li>
+        <li>
+          <span class="info-icon" aria-hidden="true">🌐</span>
+          <div>
+            <span class="info-label">University Website</span>
+            <div class="info-value">
+              <a id="officeWebsiteLink" href="#" target="_blank" rel="noopener noreferrer"></a>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <p class="notice">
+        Please confirm the office email and contact details with the university before publishing.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="section-title">Save Office Contact</h2>
+      <p class="section-intro">
+        Save the TAU ARS Office to your phone contacts for convenient access.
+      </p>
+      <div class="button-list">
+        <button class="action-button primary" id="saveContactButton" type="button">
+          <span aria-hidden="true">👤</span> Save ARS Office Contact
+        </button>
+        <button class="action-button secondary" id="downloadInfoButton" type="button">
+          <span aria-hidden="true">📄</span> Download Office Information
+        </button>
+      </div>
+      <p class="notice">
+        The contact file saves the office as “TAU ARS Office,” not an individual staff member.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="section-title">Office Services</h2>
+      <p class="section-intro">Contact the office to confirm requirements, schedules, and procedures.</p>
+      <ul class="service-list" id="serviceList"></ul>
+    </section>
+
+    <section class="card">
+      <h2 class="section-title">Save and Share This Page</h2>
+      <p class="section-intro">
+        Keep this digital office card available or share its link with others.
+      </p>
+      <div class="button-list">
+        <button class="action-button primary" id="offlineButton" type="button">
+          <span aria-hidden="true">📥</span> Save for Offline Use
+        </button>
+        <button class="action-button secondary" id="shareButton" type="button">
+          <span aria-hidden="true">↗️</span> Share NFC Page
+        </button>
+        <button class="action-button secondary" id="copyButton" type="button">
+          <span aria-hidden="true">🔗</span> Copy Page Link
+        </button>
+      </div>
+      <p class="status" id="statusMessage" role="status" aria-live="polite"></p>
+      <p class="notice">
+        Offline access requires the page to be hosted on HTTPS or localhost and saved at least once.
+        Sharing links and opening external websites require an internet connection.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <strong>Tarlac Agricultural University</strong><br>
+    Admission and Registration Services<br>
+    Digital Office Contact Card
+  </footer>
+
+  <script>
+    /*
+      VERIFY THESE DETAILS BEFORE PUBLISHING.
+      Replace the email/phone with the official ARS contact information.
+      Do not add personal staff details here.
+    */
+    const OFFICE = {
+      contactName: "TAU ARS Office",
+      organization: "Tarlac Agricultural University",
+      department: "Admission and Registration Services",
+      email: "ars@tau.edu.ph",
+      phone: "",
+      address: "Camiling, Tarlac, Philippines 2306",
+      website: "https://www.tau.edu.ph",
+      services: [
+        "Admission inquiries",
+        "Registration inquiries",
+        "Student records inquiries",
+        "Academic document inquiries",
+        "Enrollment assistance",
+        "General ARS inquiries"
+      ]
+    };
+
+    const statusMessage = document.getElementById("statusMessage");
+
+    function setStatus(message) {
+      statusMessage.textContent = message;
+    }
+
+    function renderOfficeInfo() {
+      document.getElementById("officeAddress").textContent = OFFICE.address;
+
+      const emailLink = document.getElementById("officeEmailLink");
+      if (OFFICE.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(OFFICE.email)) {
+        emailLink.textContent = OFFICE.email;
+        emailLink.href = "mailto:" + OFFICE.email;
+      } else {
+        document.getElementById("emailRow").hidden = true;
+      }
+
+      const websiteLink = document.getElementById("officeWebsiteLink");
+      websiteLink.textContent = OFFICE.website.replace(/^https?:\/\//, "");
+      websiteLink.href = OFFICE.website;
+
+      if (OFFICE.phone) {
+        document.getElementById("phoneRow").hidden = false;
+        document.getElementById("officePhone").textContent = OFFICE.phone;
+      }
+
+      const serviceList = document.getElementById("serviceList");
+      OFFICE.services.forEach(function(service) {
+        const item = document.createElement("li");
+        item.textContent = service;
+        serviceList.appendChild(item);
+      });
+    }
+
+    function escapeVCard(value) {
+      return String(value || "")
+        .replace(/\\/g, "\\\\")
+        .replace(/\n/g, "\\n")
+        .replace(/,/g, "\\,")
+        .replace(/;/g, "\\;");
+    }
+
+    function downloadFile(filename, content, mimeType) {
+      const blob = new Blob([content], { type: mimeType });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      setTimeout(function() {
+        URL.revokeObjectURL(url);
+      }, 1000);
+    }
+
+    function saveOfficeContact() {
+      const lines = [
+        "BEGIN:VCARD",
+        "VERSION:3.0",
+        "FN:" + escapeVCard(OFFICE.contactName),
+        "N:TAU ARS Office;;;;",
+        "ORG:" + escapeVCard(OFFICE.organization + ";" + OFFICE.department),
+        "ADR;TYPE=WORK:;;" + escapeVCard(OFFICE.address) + ";;;;"
+      ];
+
+      if (OFFICE.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(OFFICE.email)) {
+        lines.push("EMAIL;TYPE=WORK:" + escapeVCard(OFFICE.email));
+      }
+
+      if (OFFICE.phone) {
+        lines.push("TEL;TYPE=WORK:" + escapeVCard(OFFICE.phone));
+      }
+
+      if (OFFICE.website) {
+        lines.push("URL:" + escapeVCard(OFFICE.website));
+      }
+
+      lines.push("NOTE:" + escapeVCard("Official contact card for TAU Admission and Registration Services."));
+      lines.push("END:VCARD");
+
+      downloadFile("TAU-ARS-Office.vcf", lines.join("\r\n"), "text/vcard;charset=utf-8");
+      setStatus("The TAU ARS Office contact file has been prepared.");
+    }
+
+    function downloadOfficeInformation() {
+      const information = [
+        OFFICE.contactName,
+        OFFICE.organization,
+        OFFICE.department,
+        "",
+        "ADDRESS",
+        OFFICE.address,
+        "",
+        "EMAIL",
+        OFFICE.email || "Not provided",
+        "",
+        "PHONE",
+        OFFICE.phone || "Not provided",
+        "",
+        "WEBSITE",
+        OFFICE.website,
+        "",
+        "OFFICE SERVICES",
+        ...OFFICE.services.map(function(service) { return "- " + service; }),
+        "",
+        "Note: Confirm contact details and service requirements with the university."
+      ].join("\n");
+
+      downloadFile("TAU-ARS-Office-Information.txt", information, "text/plain;charset=utf-8");
+      setStatus("Office information has been downloaded.");
+    }
+
+    async function sharePage() {
+      const shareData = {
+        title: "TAU ARS Office",
+        text: "Tarlac Agricultural University – Admission and Registration Services",
+        url: window.location.href
+      };
+
+      if (navigator.share) {
+        try {
+          await navigator.share(shareData);
+          setStatus("Page sharing opened.");
+        } catch (error) {
+          if (error.name !== "AbortError") {
+            setStatus("Sharing was not completed. You can copy the page link instead.");
+          }
+        }
+      } else {
+        await copyPageLink();
+      }
+    }
+
+    async function copyPageLink() {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        setStatus("Page link copied to clipboard.");
+      } catch (error) {
+        setStatus("Copy was blocked by the browser. Copy the page address from your browser's address bar.");
+      }
+    }
+
+    async function saveForOfflineUse() {
+      if (!("serviceWorker" in navigator)) {
+        setStatus("Offline saving is not supported by this browser.");
+        return;
+      }
+
+      if (location.protocol !== "https:" && location.hostname !== "localhost") {
+        setStatus("Please host this page on HTTPS or localhost before saving it offline.");
+        return;
+      }
+
+      try {
+        const registration = await navigator.serviceWorker.register("./sw.js");
+        await navigator.serviceWorker.ready;
+
+        const worker = registration.active || navigator.serviceWorker.controller;
+        if (!worker) {
+          setStatus("Offline support is starting. Please tap this button again in a moment.");
+          return;
+        }
+
+        const messageChannel = new MessageChannel();
+        const result = await new Promise(function(resolve, reject) {
+          const timeout = setTimeout(function() {
+            reject(new Error("Offline save timed out."));
+          }, 10000);
+
+          messageChannel.port1.onmessage = function(event) {
+            clearTimeout(timeout);
+            resolve(event.data);
+          };
+
+          worker.postMessage({ type: "CACHE_PAGE" }, [messageChannel.port2]);
+        });
+
+        if (result && result.ok) {
+          setStatus("The page has been saved for offline use on this device.");
+        } else {
+          setStatus("Could not save the page offline. Please try again.");
+        }
+      } catch (error) {
+        setStatus("Offline saving failed. Check that index.html, sw.js, and manifest.json are hosted together.");
+      }
+    }
+
+    document.getElementById("saveContactButton").addEventListener("click", saveOfficeContact);
+    document.getElementById("downloadInfoButton").addEventListener("click", downloadOfficeInformation);
+    document.getElementById("shareButton").addEventListener("click", sharePage);
+    document.getElementById("copyButton").addEventListener("click", copyPageLink);
+    document.getElementById("offlineButton").addEventListener("click", saveForOfflineUse);
+
+    renderOfficeInfo();
+  </script>
+</body>
+</html>
