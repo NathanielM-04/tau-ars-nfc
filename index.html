@@ -241,27 +241,64 @@
     }
 
     function saveOfficeContact() {
-      const lines = [
-        "BEGIN:VCARD",
-        "VERSION:3.0",
-        "FN:" + escapeVCard(OFFICE.contactName),
-        "N:TAU ARS Office;;;;",
-        "ORG:" + escapeVCard(OFFICE.organization + ";" + OFFICE.department),
-        "ADR;TYPE=WORK:;;" + escapeVCard(OFFICE.address) + ";;;;"
-      ];
+  const lines = [
+    "BEGIN:VCARD",
+    "VERSION:3.0",
+    "FN:" + escapeVCard(OFFICE.contactName),
+    "N:TAU ARS Office;;;;",
+    "ORG:" + escapeVCard(
+      OFFICE.organization + ";" + OFFICE.department
+    ),
+    "ADR;TYPE=WORK:;;" + escapeVCard(OFFICE.address) + ";;;;"
+  ];
 
-      if (OFFICE.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(OFFICE.email)) {
-        lines.push("EMAIL;TYPE=WORK:" + escapeVCard(OFFICE.email));
-      }
-      if (OFFICE.phone) lines.push("TEL;TYPE=WORK:" + escapeVCard(OFFICE.phone));
-      if (OFFICE.website) lines.push("URL:" + escapeVCard(OFFICE.website));
+  // Add office email
+  if (
+    OFFICE.email &&
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(OFFICE.email)
+  ) {
+    lines.push(
+      "EMAIL;TYPE=WORK:" + escapeVCard(OFFICE.email)
+    );
+  }
 
-      lines.push("NOTE:" + escapeVCard("Official contact card for TAU Admission and Registration Services."));
-      lines.push("END:VCARD");
+  // Add office phone number
+  if (OFFICE.phone) {
+    lines.push(
+      "TEL;TYPE=WORK:" + escapeVCard(OFFICE.phone)
+    );
+  }
 
-      downloadFile("TAU-ARS-Office.vcf", lines.join("\r\n"), "text/vcard;charset=utf-8");
-      setStatus("The TAU ARS Office contact file has been prepared. Open the downloaded file to add it to contacts.");
-    }
+  // Add official website
+  if (OFFICE.website) {
+    lines.push(
+      "URL:" + escapeVCard(OFFICE.website)
+    );
+  }
+
+  // Add contact description
+  lines.push(
+    "NOTE:" + escapeVCard(
+      "Official contact card for TAU Admission and Registration Services."
+    )
+  );
+
+  lines.push("END:VCARD");
+
+  const vcardContent = lines.join("\r\n");
+
+  // Automatically initiate the download
+  downloadFile(
+    "TAU-ARS-Office.vcf",
+    vcardContent,
+    "text/vcard;charset=utf-8"
+  );
+
+  // Update the webpage status
+  setStatus(
+    "TAU ARS Office contact download started. Open the downloaded file to save the contact."
+  );
+}
 
     function downloadOfficeInformation() {
       const information = [
